@@ -1,0 +1,139 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    background: url('img/background-light.jpg');
+    background-size: cover;
+}
+
+div.flex {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+}
+
+.glass {
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    min-width: 250px;
+    max-width: 500px;
+    border: 1px solid white;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+form {
+    max-width: 250px;
+}
+
+form input, textarea {
+    margin-bottom: 5px;
+    padding: 5px;
+    border: none;
+    background: rgba(255,255,255,0.75);
+    border-radius: 5px;
+}
+
+summary {
+    display: inline;
+    list-style: none;
+    cursor: default;
+}
+
+button, summary {
+    background: #2196f3;
+    border: none;
+    font-weight: bold;
+    color: #fff;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all .2s;
+}
+
+button:hover, summary:hover {
+    background: #4DABF5;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+}
+
+button:active, summary:active {
+    background: #1A78C2;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+button.del {
+    background: #f44336;
+}
+
+button.del:hover {
+    background: #F6695E;
+
+}
+
+button.del:active {
+    background: #C3362B;
+}
+
+button:disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+#errors, .dbError {
+    font-weight: bold;
+    color: red;
+}
+
+.message {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: rgba(255,255,255,0.75);
+    border-radius: 5px;
+}
+
+.message table {
+    width: 100%;
+}
+
+.message table tr td {
+    word-wrap: break-word;
+}
+
+.message table tr td:nth-child(2) {
+    text-align: right;
+}
+
+.message-login {
+    font-weight: bold;
+}
+
+.message-content {
+    font-style: oblique;
+}
+
+img.icon {
+    max-width: 16px;
+    filter: invert(1);
+}
+
+@media(prefers-color-scheme: dark) {
+    body {
+        background: url('img/background-dark.jpg');
+        color: white;
+    }
+    .glass {
+        background: rgba(0,0,0,0.5);
+        border: 1px solid black;
+    }
+    .message, form input, textarea {
+        background: rgba(0,0,0,0.75);
+    }
+    form input, textarea {
+        color: white;
+    }
+}
