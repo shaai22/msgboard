@@ -4,6 +4,8 @@ $dbClass = new DB();
 
 session_start();
 
-$dbClass->insert("INSERT INTO messages (owner, content) VALUES (?, ?)", [$_SESSION['uid'], $_POST['message']]);
-
-header('Location: /messages.php');
+if ($dbClass->insert("INSERT INTO messages (owner, content) VALUES (?, ?)", [$_SESSION['uid'], $_POST['message']])) {
+    echo 'ok';
+} else {
+    echo 'error';
+}

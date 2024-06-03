@@ -7,53 +7,52 @@ if (isset($_SESSION['uid'])) {
     $page_content = '
 <details>
 <summary>Написать новое</summary>
-<form method="POST" action="backend/send.php">
+<div>
     <br>
-    <textarea name="message" rows="5" cols="28" maxlength="140" required></textarea><br><br>
-    <button type="submit"><img class="icon" src="img/icons/send.svg" alt="icon">Отправить</button>
-</form>
+    <textarea id="messageText" name="message" rows="5" cols="28" maxlength="140" required></textarea><br><br>
+    <button type="button" onclick="sendMsg()"><img class="icon" src="img/icons/send.svg" alt="icon">Отправить</button>
+</div>
 </details>
 <br>
-';
-$messages = $dbClass->select("SELECT messages.id, messages.owner, messages.content, users.login FROM messages LEFT JOIN users ON messages.owner = users.id");
+<div id="message-list">
+</div>
+<script>
+var messageList = document.querySelector("#message-list");
 
-if ($messages == []) {
-    $page_content .= '<div class="message"><p style="text-align:center">Нет объявлений</p></div>';
-} else {
-    $page_content .= '';
-    foreach ($messages as $message) {
-        if($message['owner'] == $_SESSION['uid']) {
-            $page_content .= '<div class="message">
-            <table>
-                <tr>
-                    <td>
-                        <p class="message-login">' . $message['login'] . '</p>
-                        <p class="message-content">' . $message['content'] . '</p>
-                    </td>
-                    <td>
-                        <button class="del" type="button" onclick="window.location.href=\'backend/delete.php?id=' .
-                        $message['id'] . '\'"><img class="icon" src="img/icons/delete.svg" alt="icon">Удалить</button>
-                    </td>
-                </tr>
-            </table>
-            </div>';
-        } else {
-            $page_content .= '<div class="message">
-            <table>
-                <tr>
-                    <td>
-                        <p class="message-login">' . $message['login'] . '</p>
-                        <p class="message-content">' . $message['content'] . '</p>
-                    </td>
-                    <td>
-                        <button type="button" disabled><img class="icon" src="img/icons/delete.svg" alt="icon">Удалить</button>
-                    </td>
-                </tr>
-            </table>
-            </div>';
+async function getMessages() {
+    messageList.innerHTML = "";
+    await fetch("/backend/get_messages.php")
+    .then((response) => response.json())
+    .then((data) => {
+        for (const message of data) {
+            messageList.innerHTML += `<div class=\"message\">
+                <table>
+                    <tr>
+                        <td>
+                            <p class=\"message-login\">${message.login}</p>
+                            <p class=\"message-content\">${message.content}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>`;
         }
-    }
+    });
 }
+
+async function sendMsg() {
+    var formData = new URLSearchParams();
+    formData.set("message", document.querySelector("#messageText").value);
+    await fetch("/backend/send.php", {
+        method: "POST",
+        body: formData,
+        credentials: "include"
+    });
+    getMessages();
+}
+
+window.onload = function() { getMessages(); }
+</script>
+';
 $page_content .= '
 </table>
 <br>
